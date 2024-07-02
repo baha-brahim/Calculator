@@ -8,31 +8,33 @@
     <title>Calculator</title>
 </head>
 <body> 
-    <div class="calculator">
-        <div class="screen">
-            <input type="text" name="mathSentence" id="mathSentence">
-        </div>
-        <div class="container_btns">
-            <button class="btn" id="clear">Clear</button>
-            <button class="btn" id="div">÷</button>
-            <button class="btn" id="mult">x</button>
-            <button class="btn" id="ce">ce</button>
-            <button class="btn" id="btn-7">7</button>
-            <button class="btn" id="btn-8">8</button>
-            <button class="btn" id="btn-9">9</button>
-            <button class="btn" id="subs">-</button>
-            <button class="btn" id="btn-4">4</button>
-            <button class="btn" id="btn-5">5</button>
-            <button class="btn" id="btn-6">6</button>
-            <button class="btn" id="add">+</button>
-            <button class="btn" id="btn-1">1</button>
-            <button class="btn" id="btn-2">2</button>
-            <button class="btn" id="btn-3">3</button>
-            <button class="btn" id="calculate1">=</button>
-            <button class="btn" id="btn-purcentage">%</button>
-            <button class="btn" id="btn-0">0</button>
-            <button class="btn" id="point">.</button>
-            <button class="btn" id="calculate2"></button>
+    <div class="wraper">
+        <div class="calculator">
+            <div class="screen">
+                <input type="text" name="mathSentence" id="mathSentence"  maxlength="10" readonly>
+            </div>
+            <div class="container_btns">
+                <button data-value="clear" class="btn" id="clear">Clear</button>
+                <button data-value="÷" class="btn" id="div">÷</button>
+                <button data-value="x" class="btn" id="mult">x</button>
+                <button data-value="del" class="btn" id="del">del</button>
+                <button data-value="7" class="btn" id="btn-7">7</button>
+                <button data-value="8" class="btn" id="btn-8">8</button>
+                <button data-value="9" class="btn" id="btn-9">9</button>
+                <button data-value="-" class="btn" id="subs">-</button>
+                <button data-value="4" class="btn" id="btn-4">4</button>
+                <button data-value="5" class="btn" id="btn-5">5</button>
+                <button data-value="6" class="btn" id="btn-6">6</button>
+                <button data-value="+" class="btn" id="add">+</button>
+                <button data-value="1" class="btn" id="btn-1">1</button>
+                <button data-value="2" class="btn" id="btn-2">2</button>
+                <button data-value="3" class="btn" id="btn-3">3</button>
+                <button data-value="=" class="btn" id="calculate1">=</button>
+                <button data-value="%" class="btn" id="btn-purcentage">%</button>
+                <button data-value="0" class="btn" id="btn-0">0</button>
+                <button data-value="." class="btn" id="point">.</button>
+                <button data-value="=" class="btn" id="calculate2"></button>
+            </div>
         </div>
     </div>
 </body>
