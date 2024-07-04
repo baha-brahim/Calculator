@@ -25,40 +25,31 @@ calculate2.addEventListener("mouseout" ,() => {
 })
 
 //Writing inside the input :
-let screen = document.getElementById("mathSentence");
+let screen = document.querySelector("#screen");
 let buttons = document.querySelectorAll(".btn");
 
 buttons.forEach(button => {  
     button.addEventListener("click" ,function() {
         let value = this.textContent;
+        if (value === "Clear") {
+            screen.textContent = "";
+            value = "";
+        }
         if (value === "=") {
             value = calculate();
         }
         if (value === "del") {
-            value = del();
+            screen.textContent = screen.textContent.slice(0,-1);
+            value = "";
         }
-        if (["+","-","%","x","÷"].includes(screen.value.slice(-1)) && ["+","-","%","x","÷"].includes(value)) {
-            screen.value = screen.value.slice(0,-1);
+        if (["+","-","%","x","÷"].includes(screen.textContent.slice(-1)) && ["+","-","%","x","÷"].includes(value)) {
+            screen.textContent = screen.textContent.slice(0,-1);
         }
-        if (screen.value.length === "11") {
-            screen.value += value;
+        if (screen.textContent.length < 11) {
+            screen.textContent += value;
         }
     }) 
 })
 
-//Clearing the input field :
-let clear = document.querySelector("#clear");
-clear.addEventListener("click", () => {
-    screen.value = "";
-});
-
-//Delete one character :
-function del() {
-    screen.value = screen.value.slice(0,-1);
-    return "";
-}
 
 //Calculate:
-function caluclate() {
-
-}
