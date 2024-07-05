@@ -32,36 +32,32 @@ buttons.forEach(button => {
     button.addEventListener("click" ,function() {
 
         let value = this.textContent;
-        if (["-" ,"0"].includes(screen.textContent) && ["x" ,"÷" ,"+"].includes(value)) value = "";
+        if (["-" ,"0"].includes(screen.textContent) && ["x" ,"÷" ,"+"].includes(value)) value = "" ;
         if (value === "Clear") {
             screen.textContent = "";
             value = "";
         }
+        if (["+","-","%","x","÷"].includes(screen.textContent.slice(-1)) && ["+","-","%","x","÷"].includes(value)) {
+            screen.textContent = screen.textContent.slice(0,-1);
+        }
         if (["x", "÷", "+", "-"].includes(value)) {
-            let array = []
-            let i = 0;
-            ch = ["x", "÷", "+", "-"];
-            do {
-                array = screen.textContent.split(ch[i]);
-                i+=1;
-            } while (array.length === 1 && i < 4);
-            
-            if (array.length === 2) {
-                value = calculate();
+            if (determineOperator(screen.textContent)[0].length === 2) {
+                value = calculate(screen.textContent) + value;
             }
         } 
         if (value === "=") {
-            value = calculate();
+            if (determineOperator(screen.textContent)[0].length === 2) {
+                value = calculate(screen.textContent);
+            } else {
+                value = ""
+            }
         }
         if (value === "del" && screen.textContent.length >=1 && screen.textContent[0] !== "0") {
             screen.textContent = screen.textContent.slice(0,-1);
             value = "";
         }
         if (value === "del") value = ""
-        if (["+","-","%","x","÷"].includes(screen.textContent.slice(-1)) && ["+","-","%","x","÷"].includes(value)) {
-            screen.textContent = screen.textContent.slice(0,-1);
-        }
-        if (screen.textContent.length < 11 && screen.textContent[0] !== "0") {
+        if (screen.textContent.length <= 22 && screen.textContent !== "0" && (!(["x", "÷", "+", "-"].includes(value)))) {
             screen.textContent += value;
         } else {
             screen.textContent = value;
@@ -70,8 +66,41 @@ buttons.forEach(button => {
     }) 
 })
 
+function determineOperator(string) {
+    let array = []
+    let i = 0;
+    ch = ["x", "÷", "+", "-"];
+    do {
+        array = string.split(ch[i]);
+        i += 1;
+    } while (array.length === 1 && i < 4);
+    return [array ,ch[i-1]];
+}
 
 //Calculate:
-function calculate() {
-    return "="
+function calculate(string) {
+    let nb1 = parseFloat(determineOperator(string)[0][0]);
+    let nb2 = parseFloat(determineOperator(string)[0][1]);
+    let op = determineOperator(string)[1];
+    let result = 0;
+    if (op === "+"){
+        result = nb1 + nb2;
+    }
+    if (op === "x"){
+        result = nb1 * nb2;
+    }
+    if (op === "÷"){
+        result = nb1 / nb2;
+    }
+    if (op === "-"){
+        result = nb1 - nb2;
+    }
+    screen.textContent = "";
+    if (!(Number.isInteger(result))) { 
+        alert("float")
+        return result.toFixed(9) 
+    } else {  
+        alert("no float")
+        return result;
+    }
 }
