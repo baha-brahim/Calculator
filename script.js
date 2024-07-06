@@ -26,54 +26,62 @@ calculate2.addEventListener("mouseout" ,() => {
 
 //Writing inside the input :
 let screen = document.querySelector("#screen");
+let history = document.querySelector("#history");
 let buttons = document.querySelectorAll(".btn");
 buttons.forEach(button => {  
-    let nb = 0 // this variable helps in determining if we would have to calculate or not.
     button.addEventListener("click" ,function() {
-
         let value = this.textContent;
-        if (["-" ,"0"].includes(screen.textContent) && ["x" ,"÷" ,"+"].includes(value)) value = "" ;
         if (value === "Clear") {
             screen.textContent = "";
-            value = "";
+            history.textContent = "";
         }
-        if (["+","-","%","x","÷"].includes(screen.textContent.slice(-1)) && ["+","-","%","x","÷"].includes(value)) {
-            screen.textContent = screen.textContent.slice(0,-1);
-        }
-        if (["x", "÷", "+", "-"].includes(value)) {
-            if (determineOperator(screen.textContent)[0].length === 2) {
-                value = calculate(screen.textContent) + value;
-            }
-        } 
         if (value === "=") {
-            if (determineOperator(screen.textContent)[0].length === 2) {
-                value = calculate(screen.textContent);
-            } else {
-                value = ""
-            }
+            history.textContent += screen.textContent + "=";
+            value = calculate(history.textContent);
         }
         if (value === "del" && screen.textContent.length >=1 && screen.textContent[0] !== "0") {
             screen.textContent = screen.textContent.slice(0,-1);
             value = "";
         }
-        if (value === "del") value = ""
-        if (screen.textContent.length <= 22 && screen.textContent !== "0" && (!(["x", "÷", "+", "-"].includes(value)))) {
-            screen.textContent += value;
-        } else {
-            screen.textContent = value;
-        }
+        if (value === "del") value = "" // if the user wanted to delete when there is nothing to delete it would not write del in the screen
+        if ((Number(value) && screen.textContent.length <= 10) || value === ".") {
+            screen.textContent += value ;
+        } else if (["+","-","x","÷","%"].includes(value)) {
+            if (history.textContent === "") {
+                history.textContent = screen.textContent + value;
+            } else {
+                history.textContent += screen.textContent;
+                history.textContent = calculate(history.textContent) + value;
+            }
+            screen.textContent = "";
+        } 
+        if (screen.textContent[0] === "0") {
+            screen.textContent = screen.textContent.slice(1)
+        };
         if (screen.textContent === "") screen.textContent = "0";
+        adjustFontSize(history);
+        adjustFontSize(screen);
     }) 
 })
+
+function adjustFontSize(element) {
+    const maxWidth = element.clientWidth;
+    let fontSize = parseInt(window.getComputedStyle(element).fontSize, 10);
+    
+    while (element.scrollWidth > maxWidth && fontSize > 10) { // Minimum font size of 10px
+        fontSize--;
+        element.style.fontSize = fontSize + 'px';
+    }
+}
 
 function determineOperator(string) {
     let array = []
     let i = 0;
-    ch = ["x", "÷", "+", "-"];
+    ch = ["x", "÷", "+", "-" ,"%"];
     do {
         array = string.split(ch[i]);
         i += 1;
-    } while (array.length === 1 && i < 4);
+    } while (array.length === 1 && i < 5);
     return [array ,ch[i-1]];
 }
 
@@ -95,12 +103,9 @@ function calculate(string) {
     if (op === "-"){
         result = nb1 - nb2;
     }
-    screen.textContent = "";
-    if (!(Number.isInteger(result))) { 
-        alert("float")
-        return result.toFixed(9) 
-    } else {  
-        alert("no float")
-        return result;
+    if (op === "%"){
+        result = nb1 % nb2;
     }
+    screen.textContent = "";
+    return parseFloat(result.toFixed(10));
 }
