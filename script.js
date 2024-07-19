@@ -35,7 +35,7 @@ buttons.forEach(button => {
             screen.textContent = "";
             history.textContent = "";
         }
-        if (value === "=") {
+        if (value === "=" && history.textContent[history.textContent.length-1] !== "=") {
             history.textContent += screen.textContent + "=";
             value = calculate(history.textContent);
         }
